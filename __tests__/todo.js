@@ -26,3 +26,21 @@ describe("Todolist Test Suite", () => {
     expect(all[0].completed).toBe(true);
   });
 });
+test("Should mark a overdue of todo as complete", () => {
+    expect(all[0].completed).toBe(false);
+    overDue(0);
+    expect(all[0].completed).toBe(true);
+  });
+});
+test("Should mark a dueToday todo as complete", () => {
+    expect(all[0].completed).toBe(false);
+    dueToday(0);
+    expect(all[0].completed).toBe(true);
+  });
+});
+test("Should mark a dueLater todo as complete", () => {
+    expect(all[0].completed).toBe(false);
+    dueLater(0);
+    expect(all[0].completed).toBe(true);
+  });
+});
