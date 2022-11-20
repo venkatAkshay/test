@@ -28,7 +28,7 @@ describe("Todolist Test Suite", () => {
 });
 test("Should mark a overdue of todo as complete", () => {
     expect(all[0].completed).toBe(false);
-    overDue(0);
+    overdue(0);
     expect(all[0].completed).toBe(true);
   });
 });
