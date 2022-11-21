@@ -1,46 +1,60 @@
 /* eslint-disable no-undef */
-const todoList = require("../todo");
-const { all, markAsComplete, add } = todoList();
-
-describe("Todolist Test Suite", () => {
+const todo = require("../todo");
+const { all, add, markAsComplete, overdue, dueToday, dueLater } = todo();
+const today = new Date().toLocaleDateString("en-CA");
+describe("TODO test suite", () => {
   beforeAll(() => {
     add({
-      title: "new todo",
-      completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
+      title: "study for exam",
+      dueDate: today,
+      completed: true,
     });
   });
-  test("Should add new todo", () => {
-    const todoItemsCount = all.length;
+  test("Add task", () => {
+    let lengthBefore = all.length;
     add({
-      title: "Test todo",
+      title: "play station",
+      dueDate: today,
       completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
     });
-    expect(all.length).toBe(todoItemsCount + 1);
+    expect(all.length).toBe(lengthBefore + 1);
   });
-
-  test("Should mark a todo as complete", () => {
-    expect(all[0].completed).toBe(false);
+  test("Mark task as complete", () => {
+    all[0].completed = false;
     markAsComplete(0);
     expect(all[0].completed).toBe(true);
   });
-});
-test("Should mark a overdue of todo as complete", () => {
-    expect(all[0].completed).toBe(false);
-    overdue(0);
-    expect(all[0].completed).toBe(true);
+  test("Over due tasks", () => {
+    const overdueItems = overdue();
+    var prev_date = new Date();
+    prev_date.setDate(prev_date.getDate() - 1);
+    let yesterday = prev_date.toLocaleDateString("en-CA");
+    add({
+      title: "new todo",
+      dueDate: yesterday,
+      completed: false,
+    });
+    expect(overdue().length).toBe(overdueItems.length + 1);
   });
-});
-test("Should mark a dueToday todo as complete", () => {
-    expect(all[0].completed).toBe(false);
-    dueToday(0);
-    expect(all[0].completed).toBe(true);
+  test("Due today tasks", () => {
+    const todayItems = dueToday();
+    add({
+      title: "update software",
+      dueDate: today,
+      completed: false,
+    });
+    expect(dueToday().length).toBe(todayItems.length + 1);
   });
-});
-test("Should mark a dueLater todo as complete", () => {
-    expect(all[0].completed).toBe(false);
-    dueLater(0);
-    expect(all[0].completed).toBe(true);
+  test("Due later tasks", () => {
+    const duelaterItems = dueLater();
+    var next_date = new Date();
+    next_date.setDate(next_date.getDate() + 1);
+    let tomorrow = next_date.toLocaleDateString("en-CA");
+    add({
+      title: "Pay bills",
+      dueDate: tomorrow,
+      completed: false,
+    });
+    expect(dueLater().length).toBe(duelaterItems.length + 1);
   });
 });
